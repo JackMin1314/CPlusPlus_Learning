@@ -2,47 +2,47 @@
 #include<stdlib.h> // srand, rand
 #include<time.h>   // time, clock_t
 
-// È«¾Ö±äÁ¿ÓÃÀ´¼ÆËã³ÌĞòÔËĞĞµÄÊ±¼ä
+// å…¨å±€å˜é‡ç”¨æ¥è®¡ç®—ç¨‹åºè¿è¡Œçš„æ—¶é—´
 static clock_t start, finish;
 static double duration;
 
-// Ïà¹Øº¯ÊıµÄÉùÃ÷
+// ç›¸å…³å‡½æ•°çš„å£°æ˜
 void makeRandomNum(int* arr, unsigned int n);
 void randomNum(int* arr, unsigned int n);
 
-void bubbleSort(int* arr, unsigned int n);// Ã°ÅİÅÅĞò
-void quickSort(int* arr, unsigned int left, unsigned int right);// ¿ìËÙÅÅĞò
+void bubbleSort(int* arr, unsigned int n);// å†’æ³¡æ’åº
+void quickSort(int* arr, unsigned int left, unsigned int right);// å¿«é€Ÿæ’åº
 
 
-void printNum(int* arr, unsigned int n);// ´òÓ¡Ò»¸öÊı×é
+void printNum(int* arr, unsigned int n);// æ‰“å°ä¸€ä¸ªæ•°ç»„
 
-// getRuntimeº¯ÊıµÄ²ÎÊıÊÇÒ»¸öº¯ÊıÖ¸Õë£¨½«Ò»¸öº¯Êı×÷Îª²ÎÊı´«µİ¸øÁíÒ»¸öº¯ÊıĞèÒªÓÃµ½º¯ÊıÖ¸Õë£©
+// getRuntimeå‡½æ•°çš„å‚æ•°æ˜¯ä¸€ä¸ªå‡½æ•°æŒ‡é’ˆï¼ˆå°†ä¸€ä¸ªå‡½æ•°ä½œä¸ºå‚æ•°ä¼ é€’ç»™å¦ä¸€ä¸ªå‡½æ•°éœ€è¦ç”¨åˆ°å‡½æ•°æŒ‡é’ˆï¼‰
 double getRuntime(int* arr, unsigned int n, void (*pfunc)(int*, unsigned int));
-// ±»µ÷º¯ÊıµÄÉùÃ÷ºÍ¶¨ÒåÊ±£¬Æä²ÎÊıĞèÒª¸ø³öº¯ÊıÖ¸ÕëµÄ²ÎÊıÀàĞÍ(int*,unsigned int)£¬¾ßÌåÖµĞèÒª·ÅÔÚÇ°Ãæ²ÎÊı
+// è¢«è°ƒå‡½æ•°çš„å£°æ˜å’Œå®šä¹‰æ—¶ï¼Œå…¶å‚æ•°éœ€è¦ç»™å‡ºå‡½æ•°æŒ‡é’ˆçš„å‚æ•°ç±»å‹(int*,unsigned int)ï¼Œå…·ä½“å€¼éœ€è¦æ”¾åœ¨å‰é¢å‚æ•°
 
-// Main³ÌĞòÖ÷Èë¿Ú
+// Mainç¨‹åºä¸»å…¥å£
 int main() {
     unsigned int n;
-    std::cout << "ÇëÊäÈë²úÉún¸ö²»ÖØ¸´µÄËæ»úÊıÄ¬ÈÏÎª0~n-1: ";
+    std::cout << "è¯·è¾“å…¥äº§ç”Ÿnä¸ªä¸é‡å¤çš„éšæœºæ•°é»˜è®¤ä¸º0~n-1: ";
     std::cin >> n;
     int* arr = new int[n];
     duration = getRuntime(arr, n, makeRandomNum);
-    std::cout << "´´½¨" << n << "¸ö²»ÖØ¸´µÄËæ»úÊı×Ü¹²ÓÃÊ±Îª£º" << duration << "Ãë" << std::endl;
+    std::cout << "åˆ›å»º" << n << "ä¸ªä¸é‡å¤çš„éšæœºæ•°æ€»å…±ç”¨æ—¶ä¸ºï¼š" << duration << "ç§’" << std::endl;
 
-    std::cout << "¿ªÊ¼½øĞĞ¿ìËÙÅÅĞò" << std::endl;
+    std::cout << "å¼€å§‹è¿›è¡Œå¿«é€Ÿæ’åº" << std::endl;
     quickSort(arr, 0, n - 1);
     printNum(arr, n);
-    std::cout << "¿ìËÙÅÅĞò½áÊø" << std::endl;
+    std::cout << "å¿«é€Ÿæ’åºç»“æŸ" << std::endl;
 
-    std::cout << "¿ªÊ¼½øĞĞÃ°ÅİÅÅĞò" << std::endl;
+    std::cout << "å¼€å§‹è¿›è¡Œå†’æ³¡æ’åº" << std::endl;
     bubbleSort(arr, n);
     printNum(arr, n);
 
-    std::cout << "Ã°ÅİÅÅĞò½áÊø" << std::endl;
+    std::cout << "å†’æ³¡æ’åºç»“æŸ" << std::endl;
     return 0;
 }
 
-// ¡¾¹¦ÄÜÒ»¡¿´´½¨n¸ö²»ÖØ¸´µÄËæ»úÊı
+// ã€åŠŸèƒ½ä¸€ã€‘åˆ›å»ºnä¸ªä¸é‡å¤çš„éšæœºæ•°
 void makeRandomNum(int* arr, unsigned int n) {
     randomNum(arr, n);
     printNum(arr, n);
@@ -57,29 +57,29 @@ void randomNum(int* arr, unsigned int n) {
 
         }
     }
-    std::cout << "ËùÓĞËæ»úÊı²úÉúÍê±Ï" << std::endl;
+    std::cout << "æ‰€æœ‰éšæœºæ•°äº§ç”Ÿå®Œæ¯•" << std::endl;
 }
 void printNum(int* arr, unsigned int n) {
     for (int i = 0; i < n; i++) {
         std::cout << arr[i] << " ";
-        if ((i + 1) % 5 == 0) std::cout << "\n"; // Îå¸öÊä³öÒ»ĞĞ
+        if ((i + 1) % 5 == 0) std::cout << "\n"; // äº”ä¸ªè¾“å‡ºä¸€è¡Œ
     }
     std::cout << std::endl;
 }
 
-// ±»µ÷º¯ÊıµÄÉùÃ÷ºÍ¶¨ÒåÊ±£¬Æä²ÎÊıĞèÒª¸ø³öº¯ÊıÖ¸ÕëµÄ²ÎÊıÀàĞÍ(int*,unsigned int)£¬¾ßÌåÖµĞèÒª·ÅÔÚÇ°Ãæ²ÎÊı
+// è¢«è°ƒå‡½æ•°çš„å£°æ˜å’Œå®šä¹‰æ—¶ï¼Œå…¶å‚æ•°éœ€è¦ç»™å‡ºå‡½æ•°æŒ‡é’ˆçš„å‚æ•°ç±»å‹(int*,unsigned int)ï¼Œå…·ä½“å€¼éœ€è¦æ”¾åœ¨å‰é¢å‚æ•°
 double getRuntime(int* arr, unsigned int n, void (*pfunc)(int*, unsigned int)) {
     start = clock();
-    pfunc(arr, n);// ÕâÀï¾ÍÓÃµ½ÁËÊµ¼Êº¯ÊıËùĞèÒªµÄ²ÎÊıÁË
+    pfunc(arr, n);// è¿™é‡Œå°±ç”¨åˆ°äº†å®é™…å‡½æ•°æ‰€éœ€è¦çš„å‚æ•°äº†
     finish = clock();
-    double t = double((finish - start)) / 1000;// ÓÃCLOCKS_PER_SECÒ²ÊÇ¿ÉÒÔµÄ
+    double t = double((finish - start)) / 1000;// ç”¨CLOCKS_PER_SECä¹Ÿæ˜¯å¯ä»¥çš„
     return t;
 }
 
-// ¡¾¹¦ÄÜ¶ş¡¿Á½ÖÖÅÅĞòËã·¨ Ã°ÅİºÍ¿ìÅÅ
+// ã€åŠŸèƒ½äºŒã€‘ä¸¤ç§æ’åºç®—æ³• å†’æ³¡å’Œå¿«æ’
 void bubbleSort(int* arr, unsigned int n) {
     unsigned int i, j, temp; int swapped = 0;
-    for (i = 1; i < n; i++) {
+    for (i = 1; i < n; i++) { // å¤–å¾ªç¯len(arr)-1æ¬¡ï¼Œè¿™é‡Œiä»1å¼€å§‹æ˜¯å› ä¸ºï¼Œå†…å¾ªç¯ç¬¬iè¶Ÿæ—¶ï¼Œéœ€è¦æ¯”è¾ƒn-iæ¬¡;å¦‚æœi=0ä¼šå¯¼è‡´å†…å¾ªç¯næ¬¡ï¼Œä¸‹æ ‡jä¼šæ•°ç»„æº¢å‡º
         for (j = 0; j < n - i; j++)
         {
             if (arr[j] > arr[j + 1]) {
@@ -90,30 +90,27 @@ void bubbleSort(int* arr, unsigned int n) {
             }
         }
 
-        if (swapped == 0) { break; } // Èç¹ûÓĞĞòÔò½áÊøÑ­»·
+        if (swapped == 0) { break; } // å¦‚æœæœ‰åºåˆ™ç»“æŸå¾ªç¯
     }
-
-    printNum(arr, n);
 }
 
 void quickSort(int* arr, unsigned int left, unsigned int right) {
     if (left >= right)
         return;
-    int key = arr[left]; // È¡×î×ó±ßÎª»ùÊı
-    int temp;
+    int key = arr[left]; // å–æœ€å·¦è¾¹ä¸ºåŸºæ•°
     int i = left;
     int j = right;
-    while (i < j) {
+    while (i < j) { // æ¯æ¬¡å…ˆèµ°çš„æ˜¯åŸºæ•°çš„å¯¹é¢(è¿™é‡Œæœ€å·¦è¾¹æ˜¯åŸºæ•°ï¼Œå› è€Œå³è¾¹å…ˆèµ°)ï¼›ä¸ºäº†ä¿è¯æ¯æ¬¡i,jç›¸é‡çš„æ—¶å€™ï¼Œè¦äº¤æ¢çš„å…ƒç´ å’ŒåŸºæ•°ç¬¦åˆå·¦å°å³å¤§çš„åŸåˆ™
         while (i < j && arr[j] > key) {
             j--;
         }
-        arr[i] = arr[j];
+        arr[i] = arr[j]; // ç¬¬ä¸€æ¬¡å› ä¸ºkeyä¿å­˜äº†arr[i]ï¼Œæ‰€ä»¥å¯ä»¥ç”¨arr[i]å­˜arr[j]
         while (i < j && arr[i] <= key) {
             i++;
         }
-        arr[j] = arr[i];
+        arr[j] = arr[i]; // å› ä¸ºä¸Šé¢çš„arr[i]ä¿å­˜äº†arr[j]ï¼Œè¿™é‡Œæ–°æ‰¾åˆ°çš„arr[i]å¯ä»¥è¢«ä¸Šé¢çš„arr[j]ä¿å­˜ã€‚
 
-    }
+    }//å®Œæˆå°å·¦å¤§å³æ›¿æ¢å·¥ä½œ;i,jç›¸é‡æ—¶å€™ç»“æŸå¾ªç¯ã€‚
     arr[i] = key;
     quickSort(arr, left, i - 1);
     quickSort(arr, i + 1, right);
